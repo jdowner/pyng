@@ -1,0 +1,39 @@
+#!/usr/bin/env python3
+
+"""
+Name:
+    pyng
+
+Usage:
+    pyng <address>
+
+Description:
+    This program pings the specified address
+
+"""
+
+import asyncio
+import sys
+
+import docopt
+import pyng
+
+
+def main(argv=sys.argv[1:]):
+    args = docopt.docopt(
+            __doc__,
+            argv=argv,
+            version="v0.0.1",
+            )
+
+    @asyncio.coroutine
+    def result():
+        print((yield from pyng.ping(args["<address>"], 16)))
+
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(result())
+    loop.close()
+
+
+if __name__ == "__main__":
+    main()
